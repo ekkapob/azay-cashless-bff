@@ -1,0 +1,13 @@
+{
+  "SCB": {
+    "api": {
+      "base_url": "https://api-sandbox.partners.scb/partners/sandbox",
+      "auth": {
+        "url": "/v1/oauth/token"
+      },
+      "deeplink": {
+        "transaction_url": "/v3/deeplink/transactions"
+      }
+    }
+  }
+}

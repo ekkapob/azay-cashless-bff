@@ -1,0 +1,15 @@
+{
+  "myaz": {
+    "deeplink": {
+      "banks": {
+        "SCB": {
+          "app_key": "l743f3aa77a15e44f4921de4fd70d5421d",
+          "app_secret": "5b68d285cb2543549cfdd1d3f845e94b",
+          "biller_id": "037645610331772",
+          "merchant_id": "521317344966138",
+          "terminal_id": "654444993100243"
+        }
+      }
+    }
+  }
+}

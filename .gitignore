@@ -1,2 +1,5 @@
 .DS_Store
 node_modules
+
+# this is a temporary database for all deeplinks
+deeplink_database.json
