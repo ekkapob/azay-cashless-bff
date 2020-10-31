@@ -2,11 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 
-router.get('/deeplinks/:id', (req, res) => {
-  const { id } = req.params;
-  const data = deeplinks()[id];
-  if (!data) return res.sendStatus(404);
-
+function html({ id, data }) {
   let { banks } = data;
   banks = Object.keys(banks);
 
@@ -18,8 +14,7 @@ router.get('/deeplinks/:id', (req, res) => {
     `;
   });
 
-  res.set('Content-Type', 'text/html');
-  res.send(`
+  return `
     <!DOCTYPE html>
     <html>
       <head>
@@ -64,10 +59,34 @@ router.get('/deeplinks/:id', (req, res) => {
           <div style="margin-top: 1em;font-size: 0.7em;">
             Service Provided by Cashless API
           </div>
+          <div style="margin-top: 1em;font-size: 0.7em;">
+            deeplink_id: ${id}
+          </div>
         </div>
       </body>
     </html>
-  `);
+  `;
+}
+
+router.get('/deeplinks/recent', (req, res) => {
+  const { id } = req.params;
+  const ids = Object.keys(deeplinks());
+  if (!ids.length === 0) return res.sendStatus(404);
+
+  const recentId = ids[ids.length - 1];
+  const data = deeplinks()[recentId];
+
+  res.set('Content-Type', 'text/html');
+  res.send(html({ id: recentId, data }));
+});
+
+router.get('/deeplinks/:id', (req, res) => {
+  const { id } = req.params;
+  const data = deeplinks()[id];
+  if (!data) return res.sendStatus(404);
+
+  res.set('Content-Type', 'text/html');
+  res.send(html({ id: recentId, data }));
 });
 
 function deeplinks() {
