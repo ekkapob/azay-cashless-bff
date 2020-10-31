@@ -93,6 +93,10 @@ router.get('/deeplinks', (req, res) => {
   res.send(html({ id: recentId, data }));
 });
 
+router.get('/scb/payment/:id', (req, res) => {
+  res.sendFile(`${path.join(__dirname)}/public/thankyou.html`);
+})
+
 router.get('/', (req, res) => {
   res.sendFile(`${path.join(__dirname)}/public/form.html`);
 })
