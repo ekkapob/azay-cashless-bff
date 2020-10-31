@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 
@@ -22,26 +23,26 @@ function html({ id, data }) {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
         body {
-          display: flex;
-          justify-content: center;
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-          align-items: center;
-          background-color: #E6F4F6;
-          color: #003781;
+          background-color: #004A94;
+          color: white;
         }
         .container {
           text-align: center;
-          margin-top: 10em;
+          margin-top: 5em;
           min-width: 70%;
         }
         .link-container {
           padding: 1em;
+          width: 80%;
           background-color: white;
           border-radius: 6px;
-          box-shadow: 0px 2px 10px 0px #dcdcdc;
+          box-shadow: 0px 2px 10px 0px #064079;
         }
         a {
           text-decoration: none;
+          font-weight: 700;
+          color: white;
         }
         img {
           width: 90px;
@@ -51,10 +52,13 @@ function html({ id, data }) {
       </style>
       </head>
       <body>
+        <a href="/">HOME</a>
         <div class="container">
-          <div class="link-container">
-            <h2>Pay by Bank Apps</h2>
-            <div>${bankLinks}</div>
+          <div style="display: flex;justify-content: center;">
+            <div class="link-container">
+              <h2 style="color: #004A94">Pay by Bank Apps</h2>
+              <div>${bankLinks}</div>
+            </div>
           </div>
           <div style="margin-top: 1em;font-size: 0.7em;">
             Service Provided by Cashless API
@@ -68,7 +72,16 @@ function html({ id, data }) {
   `;
 }
 
-router.get('/deeplinks/recent', (req, res) => {
+router.get('/deeplinks/:id', (req, res) => {
+  const { id } = req.params;
+  const data = deeplinks()[id];
+  if (!data) return res.sendStatus(404);
+
+  res.set('Content-Type', 'text/html');
+  res.send(html({ id, data }));
+});
+
+router.get('/deeplinks', (req, res) => {
   const { id } = req.params;
   const ids = Object.keys(deeplinks());
   if (!ids.length === 0) return res.sendStatus(404);
@@ -80,14 +93,9 @@ router.get('/deeplinks/recent', (req, res) => {
   res.send(html({ id: recentId, data }));
 });
 
-router.get('/deeplinks/:id', (req, res) => {
-  const { id } = req.params;
-  const data = deeplinks()[id];
-  if (!data) return res.sendStatus(404);
-
-  res.set('Content-Type', 'text/html');
-  res.send(html({ id: recentId, data }));
-});
+router.get('/', (req, res) => {
+  res.sendFile(`${path.join(__dirname)}/public/form.html`);
+})
 
 function deeplinks() {
   try {

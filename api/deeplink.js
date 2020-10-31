@@ -20,30 +20,6 @@ function validateDeeplink(req, res, next) {
   next();
 }
 
-const reqBody = {
-  "banks":[ "SCB" ],
-  "transactionSubType":[ "BP", "CCFA", "CCIPP" ],
-  "billPayment":{
-    "paymentAmount":1000,
-    "ref1":"ref1",
-    "ref2":"ref2",
-    "ref3":"ref3"
-  },
-  "creditCardFullAmount":{
-    "orderReference":"orderred",
-    "paymentAmount":1000
-  },
-  "installmentPaymentPlan":{
-    "merchantId":"xxx",
-    "terminalId":"xxx",
-    "orderReference":"AA100001",
-    "paymentAmount":10000,
-    "tenor":"12",
-    "ippType":"3",
-    "prodCode":"1001"
-  }
-};
-
 async function deeplink(req, res) {
   const id = uuid();
   // TODO: need to support for any touch points

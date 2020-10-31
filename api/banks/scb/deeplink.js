@@ -65,7 +65,7 @@ async function deeplink({ id, appName, paymentData}) {
           "prodCode":"1001"
         },
         "merchantMetaData":{
-          "callbackUrl": process.env.SCB_PAYMENT_CONFIRM_CALLBACK_URL || '',
+          // "callbackUrl": process.env.SCB_PAYMENT_CONFIRM_CALLBACK_URL || '',
           "merchantInfo":{
             "name":"SANDBOX MERCHANT NAME"
           },
