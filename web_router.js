@@ -16,7 +16,7 @@ function html({ id, data }) {
         <img src="/images/scb_easy_app_icon.png" alt="SCB Easy" />
       </a>
       </div>
-      <a href="/scb/payment/${id}" target="_blank"
+      <a href="/scb/payments/${id}" target="_blank"
         style="color:#004A94">
         <small class="status">status</small>
       </a>
@@ -96,7 +96,6 @@ router.get('/deeplinks/:id', (req, res) => {
 });
 
 router.get('/deeplinks', (req, res) => {
-  const { id } = req.params;
   const ids = Object.keys(deeplinks());
   if (!ids.length === 0) return res.sendStatus(404);
 
@@ -107,7 +106,36 @@ router.get('/deeplinks', (req, res) => {
   res.send(html({ id: recentId, data }));
 });
 
-router.get('/scb/payment/:id', async (req, res) => {
+router.get('/scb/payments', async (req, res) => {
+  const { id } = req.params;
+  const ids = Object.keys(deeplinks());
+  if (!ids.length === 0) return res.sendStatus(404);
+
+  try {
+    const recentId = ids[ids.length - 1];
+    const data = deeplinks()[recentId];
+    if (!data) return res.sendStatus(404)
+
+    // TODO: refactor this duplicate logic with /scb/payments/:id
+    const { banks } = data;
+    const txnId = banks.SCB.transactionId;
+    const resTxn = await transactions(txnId);
+    let htmlData  = fs.readFileSync('./public/thankyou.html', 'utf8');
+
+    res.set('Content-Type', 'text/html');
+    let list = `<li>deeplink id: ${recentId}`;
+    Object.keys(resTxn).forEach(key => {
+      list += `<li>${key}: ${resTxn[key]}</li>`;
+    });
+    const html = htmlData.toString().replace(/{{STAUS_LIST}}/g, list);
+    return res.send(html);
+  } catch(err) {
+    console.error(`scb payment callback: ${err}`);
+    res.sendStatus(400);
+  }
+});
+
+router.get('/scb/payments/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const data = deeplinks()[id];
@@ -119,7 +147,7 @@ router.get('/scb/payment/:id', async (req, res) => {
     let htmlData  = fs.readFileSync('./public/thankyou.html', 'utf8');
 
     res.set('Content-Type', 'text/html');
-    let list = '';
+    let list = `<li>deeplink id: ${id}`;
     Object.keys(resTxn).forEach(key => {
       list += `<li>${key}: ${resTxn[key]}</li>`;
     });
