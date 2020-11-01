@@ -10,9 +10,16 @@ function html({ id, data }) {
 
   let bankLinks = '';
   banks.forEach(bank => {
-    bankLinks += `<a href="${data.banks[bank].deeplinkUrl}">
-      <img src="/images/scb_easy_app_icon.png" alt="SCB Easy" />
-     </a>
+    bankLinks +=
+    `<div style="display: block">
+      <a href="${data.banks[bank].deeplinkUrl}">
+        <img src="/images/scb_easy_app_icon.png" alt="SCB Easy" />
+      </a>
+      </div>
+      <a href="/scb/payment/${id}" target="_blank"
+        style="color:#004A94">
+        <small class="status">status</small>
+      </a>
     `;
   });
 
@@ -44,6 +51,12 @@ function html({ id, data }) {
           text-decoration: none;
           font-weight: 700;
           color: white;
+        }
+        .status {
+          background-color: #e2e2e2;
+          padding: 2px 8px;
+          border-radius: 12px;
+          color: #5f5f5f;
         }
         img {
           width: 90px;
@@ -97,15 +110,20 @@ router.get('/deeplinks', (req, res) => {
 router.get('/scb/payment/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const resTxn = await transactions(id);
-    let data  = fs.readFileSync('./public/thankyou.html', 'utf8');
+    const data = deeplinks()[id];
+    if (!data) return res.sendStatus(404)
+
+    const { banks } = data;
+    const txnId = banks.SCB.transactionId;
+    const resTxn = await transactions(txnId);
+    let htmlData  = fs.readFileSync('./public/thankyou.html', 'utf8');
 
     res.set('Content-Type', 'text/html');
     let list = '';
     Object.keys(resTxn).forEach(key => {
       list += `<li>${key}: ${resTxn[key]}</li>`;
     });
-    const html = data.toString().replace(/{{STAUS_LIST}}/g, list);
+    const html = htmlData.toString().replace(/{{STAUS_LIST}}/g, list);
     return res.send(html);
   } catch(err) {
     console.error(`scb payment callback: ${err}`);
