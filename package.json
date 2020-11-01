@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
-    "start": "nohup node app.js </dev/null &>/dev/null &"
+    "start": "nohup node app.js > app.log >/dev/null 2>&1 &"
   },
   "author": "",
   "license": "ISC",
