@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const router = express.Router();
+const { transactions } = require('./banks/scb/transactions');
 
 function html({ id, data }) {
   let { banks } = data;
@@ -93,8 +94,23 @@ router.get('/deeplinks', (req, res) => {
   res.send(html({ id: recentId, data }));
 });
 
-router.get('/scb/payment/:id', (req, res) => {
-  res.sendFile(`${path.join(__dirname)}/public/thankyou.html`);
+router.get('/scb/payment/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const resTxn = await transactions(id);
+    let data  = fs.readFileSync('./public/thankyou.html', 'utf8');
+
+    res.set('Content-Type', 'text/html');
+    let list = '';
+    Object.keys(resTxn).forEach(key => {
+      list += `<li>${key}: ${resTxn[key]}</li>`;
+    });
+    const html = data.toString().replace(/{{STAUS_LIST}}/g, list);
+    return res.send(html);
+  } catch(err) {
+    console.error(`scb payment callback: ${err}`);
+    res.sendStatus(400);
+  }
 })
 
 router.get('/', (req, res) => {

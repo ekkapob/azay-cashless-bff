@@ -2,7 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const { v4: uuid } = require('uuid');
-const { deeplink: scbDeeplink } = require('./banks/scb/deeplink');
+const { deeplink: scbDeeplink } = require('../banks/scb/deeplink');
 const joi = require('joi');
 
 function validateDeeplink(req, res, next) {

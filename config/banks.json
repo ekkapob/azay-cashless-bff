@@ -7,6 +7,9 @@
       },
       "deeplink": {
         "transaction_url": "/v3/deeplink/transactions"
+      },
+      "transactions": {
+        "url": "/v2/transactions"
       }
     }
   }

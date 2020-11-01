@@ -3,7 +3,7 @@ const { auth } = require('./auth');
 const {
   appBank: appBankConfigHelper,
   bank: bankConfigHelper,
-} = require('../../../config/helper');
+} = require('./../../config/helper');
 
 async function deeplink({ id, appName, paymentData}) {
   const appBankConfig = appBankConfigHelper(appName, 'SCB');
@@ -21,6 +21,7 @@ async function deeplink({ id, appName, paymentData}) {
   } = paymentData;
 
   try {
+    // TODO: retrieve valid access_token from storage (redis, ...)
     const resAuth = await auth({ id, appName });
     const { accessToken } = resAuth;
 
@@ -64,7 +65,7 @@ async function deeplink({ id, appName, paymentData}) {
           "ippType":"3",
           "prodCode":"1001"
         },
-        "merchantMetaData":{
+        "merchantMetaData": {
           "callbackUrl": `${process.env.SCB_PAYMENT_CONFIRM_CALLBACK_URL}/${id}`,
           "merchantInfo":{
             "name":"SANDBOX MERCHANT NAME"

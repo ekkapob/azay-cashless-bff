@@ -22,12 +22,26 @@
         font-weight: 700;
         color: white;
       }
+      ul {
+        list-style: none;
+        padding: 0;
+        font-size: 0.8em;
+        border-radius: 6px;
+        border: 1px solid white;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <a href="/">HOME</a>
       <h1>Thank you for your payment</h1>
+      <div class="row justify-content-center">
+        <div class="col-10 col-md-5">
+          <ul class="m-0 p-2 mt-2">
+            {{STAUS_LIST}}
+          </ul>
+        </div>
+      </div>
     </div>
   </body>
 </html>

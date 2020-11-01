@@ -3,7 +3,7 @@ const { v4: uuid } = require('uuid');
 const {
   appBank: appBankConfigHelper,
   bank: bankConfigHelper
-} = require('../../../config/helper');
+} = require('./../../config/helper');
 
 async function auth({ id, appName }) {
 
