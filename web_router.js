@@ -11,15 +11,29 @@ function html({ id, data }) {
   let bankLinks = '';
   banks.forEach(bank => {
     bankLinks +=
-    `<div style="display: block">
-      <a href="${data.banks[bank].deeplinkUrl}">
-        <img src="/images/scb_easy_app_icon.png" alt="SCB Easy" />
-      </a>
-      </div>
-      <a href="/scb/payments/${id}" target="_blank"
-        style="color:#004A94">
-        <small class="status">status</small>
-      </a>
+    `<div style="margin-bottom: 5px;">
+       <div>
+         <a href="#">
+           <img src="/images/kma_app_icon.png" alt="Bay" />
+         </a>
+         <a href="#">
+           <img src="/images/kplus_icon.png" alt="Kplus" />
+         </a>
+       </div>
+       <div>
+         <a href="${data.banks[bank].deeplinkUrl}">
+           <img src="/images/scb_easy_app_icon.png" alt="SCB Easy" />
+         </a>
+         <a href="#">
+           <img src="/images/ktc_icon.png" alt="KTC" />
+         </a>
+       </div>
+
+     </div>
+     <a href="/scb/payments/${id}" target="_blank"
+       style="color:#004A94">
+       <small class="status">status</small>
+     </a>
     `;
   });
 
@@ -59,9 +73,10 @@ function html({ id, data }) {
           color: #5f5f5f;
         }
         img {
-          width: 90px;
-          height: 90px;
+          width: 80px;
+          height: 80px;
           margin: 0.5em;
+          border-radius: 16px;
         }
       </style>
       </head>
