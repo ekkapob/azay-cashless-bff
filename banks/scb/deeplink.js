@@ -25,6 +25,7 @@ async function deeplink({ id, appName, paymentData}) {
     const resAuth = await auth({ id, appName });
     const { accessToken } = resAuth;
 
+    const callbackUrl = `${process.env.SCB_PAYMENT_CONFIRM_CALLBACK_URL}/${id}`;
     const resDeeplink = await axios({
       method: 'post',
       baseURL: api.base_url,
@@ -66,7 +67,7 @@ async function deeplink({ id, appName, paymentData}) {
           "prodCode":"1001"
         },
         "merchantMetaData": {
-          "callbackUrl": `${process.env.SCB_PAYMENT_CONFIRM_CALLBACK_URL}/${id}`,
+          callbackUrl,
           "merchantInfo":{
             "name":"SANDBOX MERCHANT NAME"
           },

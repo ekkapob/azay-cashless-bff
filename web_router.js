@@ -25,7 +25,7 @@ function html({ id, data }) {
            <img src="/images/scb_easy_app_icon.png" alt="SCB Easy" />
          </a>
          <a href="#">
-           <img src="/images/ktc_icon.png" alt="KTC" />
+           <img src="/images/ktb_icon.png" alt="KTC" />
          </a>
        </div>
 
